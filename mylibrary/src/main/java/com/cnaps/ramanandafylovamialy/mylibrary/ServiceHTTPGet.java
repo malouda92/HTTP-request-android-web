@@ -10,15 +10,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ServiceHTTPGet extends ServiceHTTP {
+public class ServiceHTTPGet extends AsyncTask<String, Void, Integer> {
 
-    public ServiceHTTPGet(Context context){
-        super(context);
+    private String responseServer;
+    private OnTaskCompleted listener;
+
+    public ServiceHTTPGet(){
+
     }
 
     @Override
     protected void onPreExecute(){
-       super.onPreExecute();
+
     }
 
     @Override
@@ -45,6 +48,14 @@ public class ServiceHTTPGet extends ServiceHTTP {
 
     @Override
     protected void onPostExecute(Integer status){
-        super.onPostExecute(status);
+        this.listener.onTaskCompleted(this.responseServer);
+    }
+
+    public OnTaskCompleted getListener() {
+        return listener;
+    }
+
+    public void setListener(OnTaskCompleted listener) {
+        this.listener = listener;
     }
 }

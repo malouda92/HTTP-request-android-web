@@ -11,15 +11,18 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ServiceHTTPPost extends ServiceHTTP {
+public class ServiceHTTPPost extends AsyncTask<String, Void, Integer> {
 
-    public ServiceHTTPPost(Context context){
-        super(context);
+    private String responseServer;
+    private OnTaskCompleted listener;
+
+    public ServiceHTTPPost(){
+
     }
 
     @Override
     protected void onPreExecute(){
-        super.onPreExecute();
+
     }
 
     @Override
@@ -46,6 +49,14 @@ public class ServiceHTTPPost extends ServiceHTTP {
 
     @Override
     protected void onPostExecute(Integer status){
-        super.onPostExecute(status);
+        this.listener.onTaskCompleted(this.responseServer);
+    }
+
+    public OnTaskCompleted getListener() {
+        return listener;
+    }
+
+    public void setListener(OnTaskCompleted listener) {
+        this.listener = listener;
     }
 }
