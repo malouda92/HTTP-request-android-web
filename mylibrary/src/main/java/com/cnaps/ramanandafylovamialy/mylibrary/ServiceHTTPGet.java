@@ -12,13 +12,14 @@ import java.net.URL;
 
 public class ServiceHTTPGet extends AsyncTask<String, Void, Integer> {
 
+    private String responseServer;
     private Context context;
     private ProgressDialog pb;
-    private String responseServer;
-    private int responseCode;
     public OnTaskCompleted listener;
 
-    public ServiceHTTPGet(){}
+    public ServiceHTTPGet(){
+
+    }
 
     public ServiceHTTPGet(Context context){
         this.context = context.getApplicationContext();
@@ -29,16 +30,17 @@ public class ServiceHTTPGet extends AsyncTask<String, Void, Integer> {
         pb = new ProgressDialog(this.context);
         pb.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pb.setMessage("en cours");
+        pb.show();
     }
 
     @Override
     protected Integer doInBackground(String... strings) {
-
+        int responseCode = 0;
         try{
             URL url = new URL(strings[0]);
             HttpURLConnection connexion = (HttpURLConnection)url.openConnection();
             connexion.setRequestMethod("GET");
-            this.responseCode = connexion.getResponseCode();
+            responseCode = connexion.getResponseCode();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connexion.getInputStream()));
             StringBuilder sb =new StringBuilder();
             String line;
@@ -50,13 +52,13 @@ public class ServiceHTTPGet extends AsyncTask<String, Void, Integer> {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return this.responseCode;
+        return responseCode;
     }
 
     @Override
-    protected void onPostExecute(Integer code){
+    protected void onPostExecute(Integer status){
         pb.hide();
-        if(code == 200){
+        if(status == 200){
             this.listener.onTaskCompleted(this.responseServer);
         }
     }
