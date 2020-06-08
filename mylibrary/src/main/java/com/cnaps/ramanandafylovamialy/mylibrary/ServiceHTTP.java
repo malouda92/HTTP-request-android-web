@@ -7,10 +7,10 @@ import android.os.AsyncTask;
 public class ServiceHTTP extends AsyncTask<String, Void, Integer> {
 
     protected Context context;
+    protected String responseServer;
     protected ProgressDialog pb;
     public OnTaskCompleted listener;
 
-    public ServiceHTTP(){}
 
     public ServiceHTTP(Context context){
         this.context = context.getApplicationContext();
@@ -31,5 +31,6 @@ public class ServiceHTTP extends AsyncTask<String, Void, Integer> {
     @Override
     protected void onPostExecute(Integer status){
         this.pb.hide();
+        this.listener.onTaskCompleted(this.responseServer);
     }
 }

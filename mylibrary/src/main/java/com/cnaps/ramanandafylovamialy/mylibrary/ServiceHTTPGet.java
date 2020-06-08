@@ -10,27 +10,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class ServiceHTTPGet extends AsyncTask<String, Void, Integer> {
-
-    private String responseServer;
-    private Context context;
-    private ProgressDialog pb;
-    public OnTaskCompleted listener;
-
-    public ServiceHTTPGet(){
-
-    }
+public class ServiceHTTPGet extends ServiceHTTP {
 
     public ServiceHTTPGet(Context context){
-        this.context = context.getApplicationContext();
+        super(context);
     }
 
     @Override
     protected void onPreExecute(){
-        pb = new ProgressDialog(this.context);
-        pb.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pb.setMessage("en cours");
-        pb.show();
+       super.onPreExecute();
     }
 
     @Override
@@ -57,9 +45,6 @@ public class ServiceHTTPGet extends AsyncTask<String, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer status){
-        pb.hide();
-        if(status == 200){
-            this.listener.onTaskCompleted(this.responseServer);
-        }
+        super.onPostExecute(status);
     }
 }

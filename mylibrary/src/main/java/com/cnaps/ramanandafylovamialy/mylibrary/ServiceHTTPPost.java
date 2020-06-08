@@ -13,12 +13,6 @@ import java.net.URL;
 
 public class ServiceHTTPPost extends ServiceHTTP {
 
-    private String responseServer;
-
-    public ServiceHTTPPost(){
-        super();
-    }
-
     public ServiceHTTPPost(Context context){
         super(context);
     }
@@ -53,8 +47,5 @@ public class ServiceHTTPPost extends ServiceHTTP {
     @Override
     protected void onPostExecute(Integer status){
         super.onPostExecute(status);
-        if(status == 201){
-            this.listener.onTaskCompleted(this.responseServer);
-        }
     }
 }
