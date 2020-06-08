@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.cnaps.ramanandafylovamialy.mylibrary.OnTaskCompleted;
 import com.cnaps.ramanandafylovamialy.mylibrary.ServiceHTTPPost;
+import com.cnaps.ramanandafylovamialy.mylibrary.User;
 
 import org.json.JSONObject;
 
@@ -32,20 +33,23 @@ public class MainActivity extends AppCompatActivity {
         this.btnValider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject jso = new JSONObject();
-                try{
-                    jso.put("username", username.getText().toString());
-                    jso.put("password", password.getText().toString());
-                    ServiceHTTPPost serviceHTTPPost = new ServiceHTTPPost();
-                    serviceHTTPPost.execute("http://192.168.88.229:8000/api/user/post/",jso.toString());
-                    serviceHTTPPost.setListener(new OnTaskCompleted() {
-                        @Override
-                        public void onTaskCompleted(String response) {
-                            Toast.makeText(getApplicationContext(),"" + response, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }catch (Exception e){
-                    Log.e("Tag", "" + e.getMessage());
+                if(!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
+                    User user = new User(0, username.getText().toString(),password.getText().toString());
+                    JSONObject jso = new JSONObject();
+                    try{
+                        jso.put("username", user.getUsername());
+                        jso.put("password", user.getPassword());
+                        ServiceHTTPPost serviceHTTPPost = new ServiceHTTPPost();
+                        serviceHTTPPost.execute("http://192.168.88.229:8000/api/user/post/",jso.toString());
+                        serviceHTTPPost.setListener(new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted(String response) {
+                                Toast.makeText(getApplicationContext(),"" + response, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }catch (Exception e){
+                        Log.e("Tag", "" + e.getMessage());
+                    }
                 }
             }
         });
